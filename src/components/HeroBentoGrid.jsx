@@ -26,7 +26,7 @@ export function HeroBentoGrid({ onOpenModal, onOpenContact }) {
     title: 'Anushka Rai — Showreel 2026',
     subtitle: 'Showreel 2026: Personality, Performance & AI Pipelines',
     categoryLabel: 'Showreel',
-    videoUrl: 'assets/Showreel.mp4',
+    videoUrl: 'https://youtu.be/Iix7CYhyk2M',
     toolsUsed: ['CapCut'],
     description: 'A punchy, personality-driven showreel crafted entirely within CapCut. Directly takes on the software debate with humor and confidence, blending kinetic paper-cutout motion, high-retention D2C brand reels, travel vlogging, and end-to-end AI brand commercials to prove that pacing, timing, and storytelling beat tool dogma.',
     aspectRatio: '16:9',
