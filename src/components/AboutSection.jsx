@@ -35,7 +35,7 @@ export function AboutSection() {
           {/* Main Portrait Frame */}
           <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-[#E2D5C8] shadow-md">
             <img 
-              src="assets/Anushka.png"
+              src="public/Anushka.png"
               alt="Anushka Rai - Video Editor and AI Video Creator"
               className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
             />
