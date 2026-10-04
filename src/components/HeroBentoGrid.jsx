@@ -1,7 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Play, 
-  Pause, 
   Volume2, 
   VolumeX, 
   Maximize2, 
@@ -14,45 +12,61 @@ import {
   Youtube
 } from 'lucide-react';
 import { TECH_STACK } from '../data/portfolioData.js';
-import { extractYouTubeId, getYouTubeThumbnail, getYouTubeEmbedUrl } from '../utils/mediaHelper.js';
 
 export function HeroBentoGrid({ onOpenModal, onOpenContact }) {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [selectedTool, setSelectedTool] = useState(null);
-  const videoRef = useRef(null);
+  const iframeRef = useRef(null);
 
   const showreelData = {
     title: 'Anushka Rai — Showreel 2026',
     subtitle: 'Showreel 2026: Personality, Performance & AI Pipelines',
     categoryLabel: 'Showreel',
     videoUrl: 'https://youtu.be/Iix7CYhyk2M',
+    youtubeId: 'Iix7CYhyk2M',
     toolsUsed: ['CapCut'],
     description: 'A punchy, personality-driven showreel crafted entirely within CapCut. Directly takes on the software debate with humor and confidence, blending kinetic paper-cutout motion, high-retention D2C brand reels, travel vlogging, and end-to-end AI brand commercials to prove that pacing, timing, and storytelling beat tool dogma.',
     aspectRatio: '16:9',
   };
 
-  const isYouTubeShowreel = Boolean(extractYouTubeId(showreelData.videoUrl));
-
-  const togglePlay = () => {
-    if (isYouTubeShowreel) {
-      onOpenModal(showreelData);
-      return;
-    }
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
+  // Attempt unmute on very first user interaction if browser policy initially blocked unmuted autoplay
+  useEffect(() => {
+    const handleFirstGesture = () => {
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'unMute', args: '' }),
+          '*'
+        );
+        setIsMuted(false);
       }
-      setIsPlaying(!isPlaying);
-    }
-  };
+    };
+
+    window.addEventListener('pointerdown', handleFirstGesture, { once: true });
+    window.addEventListener('keydown', handleFirstGesture, { once: true });
+    window.addEventListener('touchstart', handleFirstGesture, { once: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+      window.removeEventListener('touchstart', handleFirstGesture);
+    };
+  }, []);
 
   const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      if (isMuted) {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'unMute', args: '' }),
+          '*'
+        );
+        setIsMuted(false);
+      } else {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'mute', args: '' }),
+          '*'
+        );
+        setIsMuted(true);
+      }
     }
   };
 
@@ -101,51 +115,19 @@ export function HeroBentoGrid({ onOpenModal, onOpenContact }) {
             </div>
           </div>
 
-          {/* Video Container with Rounded Mask */}
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#1E1714] shadow-inner flex items-center justify-center">
-            {isYouTubeShowreel ? (
-              <img
-                src={getYouTubeThumbnail(showreelData.videoUrl, 'maxresdefault') || "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80"}
-                alt={showreelData.title}
-                className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-500"
-                onClick={togglePlay}
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                className="w-full h-full object-cover cursor-pointer"
-                autoPlay
-                loop
-                muted={isMuted}
-                playsInline
-                onClick={togglePlay}
-              >
-                <source 
-                  src={showreelData.videoUrl} 
-                  type="video/mp4" 
-                />
-                Your browser does not support video playback.
-              </video>
-            )}
-
-            {/* Play/Pause Overlay indicator on click */}
-            <button
-              id="showreel-play-btn"
-              onClick={togglePlay}
-              className={`absolute inset-0 m-auto w-14 h-14 rounded-2xl bg-white/30 backdrop-blur-md border border-white/60 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 shadow-lg cursor-pointer ${
-                isYouTubeShowreel ? 'opacity-95 hover:scale-110' : (isPlaying ? 'opacity-0 group-hover:opacity-80' : 'opacity-100 scale-105')
-              }`}
-              aria-label={isPlaying ? 'Pause showreel' : 'Play showreel'}
-            >
-              {isYouTubeShowreel ? (
-                <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-              ) : isPlaying ? (
-                <Pause className="w-6 h-6 text-white fill-white" />
-              ) : (
-                <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-              )}
-            </button>
-
+          {/* Video Container with Rounded Mask - Real YouTube Iframe Player */}
+         {/* Video Container with Pure White Background & Edge Bleed */}
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-white border border-[#E8DFD8] shadow-sm flex items-center justify-center">
+            <iframe
+              ref={iframeRef}
+              id="hero-youtube-showreel"
+              src="https://www.youtube.com/embed/Iix7CYhyk2M?autoplay=1&mute=0&loop=1&playlist=Iix7CYhyk2M&enablejsapi=1&controls=0&modestbranding=1&rel=0&playsinline=1"
+              title="Anushka Rai — Showreel 2026"
+              className="w-full h-full border-0 absolute inset-0 scale-[1.03] origin-center"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
           </div>
 
           {/* Bottom Showreel Workflow Notes */}
@@ -180,7 +162,7 @@ export function HeroBentoGrid({ onOpenModal, onOpenContact }) {
               {/* Category Pill */}
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#C86D51]/10 text-[#A84E32] border border-[#C86D51]/20">
                 <Sparkles className="w-3.5 h-3.5 text-[#C86D51]" />
-                <span>VIDEO EDITOR  &bull;  AI VIDEO CREATOR</span>
+                <span>VIDEO EDITOR &bull; AI VIDEO CREATOR</span>
               </div>
 
               {/* Exact Blueprint Heading */}
@@ -196,8 +178,8 @@ export function HeroBentoGrid({ onOpenModal, onOpenContact }) {
               {/* Bio Summary */}
               <p className="text-sm text-[#5A483E] leading-relaxed">
                 I edit high-retention video content for brands and modern social feeds. 
-                By combining agile timeline editing in CapCut with generative AI tools
-                <strong className="text-[#2A211D] font-medium"> (HeyGen, ElevenLabs, Magnific, Chatgpt)</strong> , I build scroll-stopping ad reels, founder stories, and explainers engineered to keep viewers watching
+                By combining agile timeline editing in CapCut with generative AI tools{' '}
+                <strong className="text-[#2A211D] font-medium">(HeyGen, ElevenLabs, Magnific, Chatgpt)</strong>, I build scroll-stopping ad reels, founder stories, and explainers engineered to keep viewers watching.
               </p>
 
               {/* Highlights Chips */}
