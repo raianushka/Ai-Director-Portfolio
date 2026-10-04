@@ -17,7 +17,7 @@ const TRACKOCITY_CREATIVES = [
     videoUrl: 'https://youtube.com/shorts/HZXTg53oPao?feature=share',
     hookStrategy: 'Multi-Persona UGC & Rapid City Cuts (Pune, Delhi, Bengaluru, Mumbai)',
     campaignFlight: 'Paid Meta Video Creative Test · D2C Funnel',
-    screenshot: 'assets/trac5.jpeg',
+    screenshot: 'public/trac5.jpeg',
     metrics: [
       { label: 'Hook Rate (3s %)', value: '48.05%', highlight: true, note: 'vs 20-30% benchmark' },
       { label: 'CTR (Link Clicks)', value: '9.77%', highlight: true, note: '120 clicks' },
@@ -38,7 +38,7 @@ const TRACKOCITY_CREATIVES = [
     videoUrl: 'https://youtube.com/shorts/FNrXFAqYfAw?feature=share',
     hookStrategy: 'Dynamic Festive Counter SFX & Rapid-Fire Hamper Unboxing Cut',
     campaignFlight: 'Ganesh Utsav Festive Offer Test · D2C Funnel',
-    screenshot: 'assets/trac2.jpeg',
+    screenshot: 'public/trac2.jpeg',
     metrics: [
       { label: 'CTR (Link Clicks)', value: '2.93', highlight: true, note: '148 clicks' },
       { label: 'Hook Rate (3s %)', value: '17.65%', highlight: true, note: 'vs 20-30% benchmark' },
@@ -58,7 +58,7 @@ const TRACKOCITY_CREATIVES = [
     format: '9:16 Organic Process Documentary',
     videoUrl: 'https://youtube.com/shorts/uZu-kdf81f8?feature=share',
     campaignFlight: 'Product Education & Craftsmanship Top-of-Funnel',
-    screenshot: 'assets/trac3.jpeg',
+    screenshot: 'public/trac3.jpeg',
     metrics: [
       { label: 'Hold Rate', value: '41.81%', highlight: true, note: '7,675 Sec30 views' },
       { label: 'Hook Rate (3s %)', value: '24.05%', highlight: false, note: 'Strong organic hook' },
@@ -78,7 +78,7 @@ const TRACKOCITY_CREATIVES = [
     format: '9:16 Direct-Response Offer Creative',
     videoUrl: 'https://youtube.com/shorts/rcP1u_TiQQI?feature=share',
     campaignFlight: 'Direct Conversion Offer Scaling Campaign',
-    screenshot: 'assets/trac1.jpeg',
+    screenshot: 'public/trac1.jpeg',
      metrics: [
       { label: 'Hold Rate', value: '39.26%', highlight: true, note: '7,675 Sec30 views' },
       { label: 'Hook Rate (3s %)', value: '15.1%', highlight: false, note: 'Strong organic hook' },
@@ -99,7 +99,7 @@ const TRACKOCITY_CREATIVES = [
     videoUrl: 'https://youtube.com/shorts/Kx9KlRhGI6M?feature=share',
     hookStrategy: 'Real Consumer Comment-Reply Screen Grab & Science-Backed Ingredient Visuals',
     campaignFlight: 'Customer Objection & Trust Building Test Flight',
-    screenshot: 'assets/trac4.jpeg',
+    screenshot: 'public/trac4.jpeg',
     metrics: [
       { label: 'Hook Rate (3s %)', value: '44.18%', highlight: false, note: 'Strong curiosity hook' },
       { label: 'Hold Rate', value: '28.7%', highlight: true, note: 'Objection-clearing' },
